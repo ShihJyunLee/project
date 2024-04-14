@@ -1,30 +1,48 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <NavbarMenu></NavbarMenu>
   <router-view/>
+  <notifications position="bottom center" />
+  <FooterComponents v-if="showFooter"></FooterComponents>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import NavbarMenu from '@/components/NavbarMenu.vue'
+import FooterComponents from '@/components/FooterComponents.vue'
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  watch: {
+    $route (to, from) {
+      this.showFooter = to.meta.showFooter !== false
     }
+  },
+  data () {
+    return {
+      showFooter: true
+    }
+  },
+  components: {
+    NavbarMenu,
+    FooterComponents
   }
 }
+</script>
+
+<style>
+  body {
+    display: flex;          /* 使用 Flexbox 佈局 */
+    flex-direction: column; /* 垂直方向排列子元素 */
+    min-height: 100vh;      /* 最小高度為視窗高度的 100% */
+    margin: 0;              /* 去掉預設的 body 邊距 */
+  }
+
+  #app {
+    flex: 1;                 /* 充滿剩餘空間，使 Footer 被推到底部 */
+    display: flex;          /* 使用 Flexbox 佈局 */
+    flex-direction: column; /* 垂直方向排列子元素 */
+  }
+
+  .footer {
+    margin-top: auto;        /* 將 margin-top 設為 auto，將 Footer 推到底部 */
+  }
+
 </style>
